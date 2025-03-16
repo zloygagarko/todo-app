@@ -24,7 +24,8 @@ jobs:
         displayName: 'Copy files to artifact staging directory'
 
   # Step 4: Publish the artifacts (to deploy later or use in another pipeline)
-      - publish: $(Build.ArtifactStagingDirectory)
-        artifact: drop
-        displayName: 'Publish Artifacts'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          artifactName: 'drop'
+          publishLocation: 'Container'
 
