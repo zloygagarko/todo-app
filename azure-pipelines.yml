@@ -7,23 +7,34 @@ jobs:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-      - task: UseNode@1
-        inputs:
-          versionSpec: '16.x'  # Specify the Node.js version (e.g., 16.x for your app)
-          addToPath: true  # Add Node.js to the PATH environment variable
+   # azure-pipelines.yml
 
-      - script: |
-          npm install  # Install the dependencies from package.json
-          displayName: 'Install dependencies'
-      
-      - script: |
-          npm test  # Run the tests (adjust based on your setup, e.g., `npm run test`)
-          displayName: 'Run tests'
+trigger:
+  branches:
+    include:
+      - main  # Trigger the pipeline when changes are pushed to the main branch
 
-      - script: |
-          npm run build  # Build the app (e.g., minify files, bundle assets)
-          displayName: 'Build application'
+pool:
+  vmImage: 'ubuntu-latest'  # Use Ubuntu VM for building the app
 
-      - publish: $(Build.ArtifactStagingDirectory)
-        artifact: drop
-        displayName: 'Publish Artifacts'
+steps:
+  # Step 1: Checkout the code from the repository
+  - task: Checkout@1
+    displayName: 'Checkout code'
+
+  # Step 2: Optionally, run any tests if you have them
+  - script: |
+      echo "No tests to run"
+    displayName: 'Run tests (optional)'
+
+  # Step 3: Copy all the files to the build directory
+  - script: |
+      mkdir -p $(Build.ArtifactStagingDirectory)
+      cp -r * $(Build.ArtifactStagingDirectory)/  # Copy everything to the staging directory
+    displayName: 'Copy files to artifact staging directory'
+
+  # Step 4: Publish the artifacts (to deploy later or use in another pipeline)
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: drop
+    displayName: 'Publish Artifacts'
+
