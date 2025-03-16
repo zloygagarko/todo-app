@@ -6,35 +6,25 @@ jobs:
   - job: ActivityonLinux 
     pool:
       vmImage: 'ubuntu-latest'
+   
     steps:
-   # azure-pipelines.yml
-
-trigger:
-  branches:
-    include:
-      - main  # Trigger the pipeline when changes are pushed to the main branch
-
-pool:
-  vmImage: 'ubuntu-latest'  # Use Ubuntu VM for building the app
-
-steps:
   # Step 1: Checkout the code from the repository
-  - task: Checkout@1
-    displayName: 'Checkout code'
+      - task: Checkout@1
+        displayName: 'Checkout code'
 
   # Step 2: Optionally, run any tests if you have them
-  - script: |
-      echo "No tests to run"
-    displayName: 'Run tests (optional)'
+      - script: |
+          echo "No tests to run"
+        displayName: 'Run tests (optional)'
 
   # Step 3: Copy all the files to the build directory
-  - script: |
-      mkdir -p $(Build.ArtifactStagingDirectory)
-      cp -r * $(Build.ArtifactStagingDirectory)/  # Copy everything to the staging directory
-    displayName: 'Copy files to artifact staging directory'
+      - script: |
+          mkdir -p $(Build.ArtifactStagingDirectory)
+          cp -r * $(Build.ArtifactStagingDirectory)/  # Copy everything to the staging directory
+        displayName: 'Copy files to artifact staging directory'
 
   # Step 4: Publish the artifacts (to deploy later or use in another pipeline)
-  - publish: $(Build.ArtifactStagingDirectory)
-    artifact: drop
-    displayName: 'Publish Artifacts'
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: drop
+        displayName: 'Publish Artifacts'
 
