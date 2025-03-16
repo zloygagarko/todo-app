@@ -3,7 +3,7 @@ trigger:
   - main
 
 jobs:
-  - job: ActivityonLinux 
+  - job: Building
     pool:
       vmImage: 'ubuntu-latest'
    
