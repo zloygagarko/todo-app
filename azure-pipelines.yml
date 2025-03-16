@@ -1,6 +1,9 @@
 name: TestApp
 trigger:
   - main
+variables:
+  azureSubscription: '6e63a3ce-b63d-46fa-9e7a-2490b8250638'
+  webAppName: 'todo-app'
 
 jobs:
   - job: Building
