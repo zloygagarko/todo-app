@@ -1,0 +1,29 @@
+name: TestApp
+trigger:
+  - main
+
+jobs:
+  - job: ActivityonLinux 
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: UseNode@1
+        inputs:
+          versionSpec: '16.x'  # Specify the Node.js version (e.g., 16.x for your app)
+          addToPath: true  # Add Node.js to the PATH environment variable
+
+      - script: |
+          npm install  # Install the dependencies from package.json
+          displayName: 'Install dependencies'
+      
+      - script: |
+          npm test  # Run the tests (adjust based on your setup, e.g., `npm run test`)
+          displayName: 'Run tests'
+
+      - script: |
+          npm run build  # Build the app (e.g., minify files, bundle assets)
+          displayName: 'Build application'
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: drop
+        displayName: 'Publish Artifacts'
